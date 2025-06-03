@@ -1,28 +1,28 @@
-version: '3.8'
+version: '3.8'  # 指定 Docker Compose 檔案的版本
 
-services:
+services:  # 定義服務清單
 
-  mongo:
-    image: mongo:6.0.2
-    container_name: mongodb
-    restart: always
+  mongo:  # 定義 MongoDB 服務
+    image: mongo:6.0.2  # 使用 MongoDB 6.0.2 映像
+    container_name: mongodb  # 容器名稱為 mongodb
+    restart: always  # 總是重新啟動容器（無論失敗還是手動重啟）
     volumes:
-      - ./mongodb/mongod.conf:/etc/mongod.conf
-      - ./mongodb/data:/data/db
-    command: [ "mongod", "--config", "/etc/mongod.conf" ]
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      - ./mongodb/mongod.conf:/etc/mongod.conf  # 將本機的 mongod.conf 檔掛載到容器中
+      - ./mongodb/data:/data/db  # 將本機的資料目錄掛載到容器中，用於持久化儲存
+    command: [ "mongod", "--config", "/etc/mongod.conf" ]  # 啟動 MongoDB 並指定配置檔
+    environment:  # 設定環境變數
+      MONGO_INITDB_ROOT_USERNAME: root  # 設定初始 root 使用者名稱
+      MONGO_INITDB_ROOT_PASSWORD: example  # 設定初始 root 密碼
     ports:
-      - 27017:27017
+      - 27017:27017  # 將本機的 27017 埠對應到容器內部的 27017 埠（MongoDB 預設埠）
 
-  app:
+  app:  # 定義應用程式服務
     build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: app
-    restart: always
+      context: .  # 建置映像時使用當前目錄作為上下文
+      dockerfile: Dockerfile  # 指定 Dockerfile 檔案
+    container_name: app  # 容器名稱為 app
+    restart: always  # 總是重新啟動容器
     environment:
-      - MONGO_URL=mongodb://root:example@mongo:27017/
+      - MONGO_URL=mongodb://root:example@mongo:27017/  # 設定應用程式的環境變數，連接 MongoDB 的 URL
     ports:
-      - 8000:8000
+      - 8000:8000  # 將本機的 8000 埠對應到容器內部的 8000 埠（應用程式服務的埠）
