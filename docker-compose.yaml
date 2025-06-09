@@ -23,6 +23,6 @@ services:  # 定義服務清單
     container_name: app  # 容器名稱為 app
     restart: always  # 總是重新啟動容器
     environment:
-      - MONGO_URL=mongodb://root:example@mongo:27017/  # 設定應用程式的環境變數，連接 MongoDB 的 URL
+      - MONGO_URL=mongodb://root:example@mongo:27017/  # 設定應用程式的環境變數，連接 MongoDB 的 URL，格式是：mongodb://<username>:<password>@<host>:<port>/
     ports:
       - 8000:8000  # 將本機的 8000 埠對應到容器內部的 8000 埠（應用程式服務的埠）
