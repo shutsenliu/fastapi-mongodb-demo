@@ -14,7 +14,7 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v4
       - name: build docker image
-        uses: ./.github/actions/docker # ./：代表的是這個 GitHub repository 的根目錄
+        uses: shutsenliu/github-action-docker # 改成 github 帳號 + Repository 的名稱
         # 用 with 傳參數給 action.yaml
         with: 
           docker_hub_user: ${{ secrets.DOCKER_HUB_USER }}
