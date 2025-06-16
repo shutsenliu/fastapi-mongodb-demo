@@ -1,0 +1,26 @@
+name: build-docker-image
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build-docker-image:
+    runs-on: ubuntu-22.04
+    env:
+      DOCKER_HUB_TOKEN: ${{ secrects.DOCKER_HUB_TOKEN }}
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+      - name: docker login
+        run: |
+          echo $DOCKER_HUB_TOKEN > password.txt
+          cat password.txt | docker login --username yingying6 --password-stdin
+      - name: build image
+        run: |
+          docker image build -t yingying6/fastapi-demo:latest .
+      - name: push image
+        run: |
+          docker image push yingying6/fastapi-demo:latest
+    
