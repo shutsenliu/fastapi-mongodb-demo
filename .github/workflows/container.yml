@@ -1,0 +1,23 @@
+name: test docker container action
+on: workflow_dispatch
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: A job to say hello
+    steps:
+      - name: Hello world action step
+        # 給這個 step 一個 ID，後面其他 step 可以用 steps.hello 來存取它的輸出
+        id: hello
+        # GitHub 會去抓該 repo 的 action.yml，裡面定義了 Dockerfile 和程式邏輯
+        uses: xiaopeng163/docker-container-actions@master
+        with: 
+          #  傳一個輸入參數 who-to-greet 給這個 Action
+          who-to-greet: 'Github Docker Container Actions'
+
+      # 第二個 step，用來顯示前面 Action 執行時輸出的時間
+      - name: Get the output time
+        # 使用 ${{ steps.hello.outputs.time }} 來存取上個 step 的輸出（由 echo "::set-output name=time::..." 產生）
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
+
+    
